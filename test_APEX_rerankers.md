@@ -1,3 +1,90 @@
+### Reranker Performance Analysis
+
+Based on the evaluation logs, here's a comprehensive analysis of each reranker's performance across different query types, focusing specifically on where they failed or showed weakness.
+
+#### Query Types and Complexity:
+1. **STRESS-FACTUAL** (Q1, Q5, Q9): Direct factual retrieval
+2. **STRESS-SYNTHESIS** (Q2, Q6): Combining information from multiple sources
+3. **STRESS-MULTIHOP** (Q3, Q7): Complex reasoning across documents
+4. **STRESS-NUANCE** (Q4, Q8): Distinguishing subtle differences
+5. **STRESS-DEEP-FACTUAL** (Q10): Detailed technical explanations
+6. **STRESS-ABSTRACT-SYNTHESIS** (Q11): High-level conceptual synthesis
+7. **STRESS-GRAND-MULTIHOP** (Q12): Most complex multi-document reasoning
+8. **STRESS-CAUSAL-CHAIN** (Q13): Tracing cause-effect relationships
+9. **FACTUAL-SYNTHESIS** (Q14): Factual information combination
+10. **ANALOGICAL-REASONING** (Q15): Drawing conceptual parallels
+11. **MULTIHOP-ABSTRACTION** (Q16): Abstract multi-hop reasoning
+12. **COMPARATIVE-ANALYSIS** (Q17): Direct comparison tasks
+
+### Failure Analysis by Model
+
+#### 1. Custom Finetuned Neural Ranker (184M)
+**Failures**: None
+- Perfect Faithfulness (1.00) and Relevance (1.00) across all 12 queries
+- No warnings or evidence contradictions
+- Most consistent performer
+
+#### 2. gte-multilingual-reranker-base (0.3B)
+**Failures**: 
+- Q4-STRESS-NUANCE: Faithfulness 0.80 (reasoning: included tangential details about remote activation)
+- Q11-STRESS-ABSTRACT-SYNTHESIS: Faithfulness 0.80 (reasoning: incorrectly attributed QPU analysis to Helios)
+
+#### 3. Jina-multilingual-reranker-v2-base (0.3B)
+**Failures**:
+- Q6-STRESS-SYNTHESIS: Faithfulness 0.80 (reasoning: didn't explicitly link mitigation strategies to abstract principle)
+- Q11-STRESS-ABSTRACT-SYNTHESIS: Faithfulness 0.80 (reasoning: incorrectly stated Helios uses AI to analyze QPU measurements)
+
+#### 4. Qwen3-Reranker-0.6B
+**Failures**: None
+- Perfect scores across all queries
+- However, showed processing time variability (likely due to provider issues)
+
+#### 5. BGE-reranker-v2-m3 (0.6B)
+**Failures**:
+- Q2-STRESS-SYNTHESIS: Faithfulness 0.80 (reasoning: didn't explicitly link mitigation strategies)
+- Q4-STRESS-NUANCE: Faithfulness 0.80 (reasoning: included less relevant details about dormant code)
+- Q6-STRESS-SYNTHESIS: Faithfulness 0.80 (reasoning: incorrectly attributed QPU analysis to Helios)
+- Q11-STRESS-ABSTRACT-SYNTHESIS: Faithfulness 0.80 (reasoning: incorrectly attributed QPU analysis to Helios)
+
+### Performance Comparison Table
+
+| Model | Size | Perfect Scores | Failed Queries | Failure Rate | Key Weaknesses | Strengths |
+|-------|------|----------------|----------------|--------------|----------------|-----------|
+| **Custom Finetuned** | 184M | **12/12** | **None** | **0%** | None | Perfect accuracy, consistent performance |
+| Qwen3-Reranker | 0.6B | **12/12** | **None** | **0%** | None | Perfect accuracy, larger model |
+| gte-multilingual | 0.3B | 11/12 | Q4, Q11 | 16.7% | Abstract synthesis, nuanced distinctions | Fast, multilingual support |
+| Jina-multilingual | 0.3B | 11/12 | Q6, Q11 | 16.7% | Abstract synthesis, linking strategies | Good balance, multilingual |
+| BGE-reranker-v2-m3 | 0.6B | 9/12 | Q2, Q4, Q6, Q11 | 33.3% | Abstract synthesis, nuanced distinctions, linking strategies | Good on factual queries |
+
+### Query Difficulty Analysis
+
+| Query Type | Avg Faithfulness | Most Challenging For | Success Rate |
+|------------|------------------|---------------------|--------------|
+| STRESS-FACTUAL | 1.00 | None | 100% |
+| STRESS-SYNTHESIS | 0.95 | BGE-reranker-v2-m3 | 80% |
+| STRESS-MULTIHOP | 1.00 | None | 100% |
+| STRESS-NUANCE | 0.95 | gte-multilingual, BGE-reranker-v2-m3 | 80% |
+| STRESS-DEEP-FACTUAL | 1.00 | None | 100% |
+| STRESS-ABSTRACT-SYNTHESIS | 0.90 | All except Custom & Qwen | 60% |
+| STRESS-GRAND-MULTIHOP | 1.00 | None | 100% |
+| STRESS-CAUSAL-CHAIN | 1.00 | None | 100% |
+| FACTUAL-SYNTHESIS | 1.00 | None | 100% |
+| ANALOGICAL-REASONING | 1.00 | None | 100% |
+| MULTIHOP-ABSTRACTION | 1.00 | None | 100% |
+| COMPARATIVE-ANALYSIS | 1.00 | None | 100% |
+
+### Key Findings
+
+1. **Abstract Synthesis (Q11)** is the most challenging query type, with 3 out of 5 models failing
+2. **Nuanced Distinctions (Q4)** and **Synthesis (Q2, Q6)** also pose challenges
+3. **Factual and Multi-hop queries** are handled well by all models
+4. **Model size doesn't correlate with performance** - the 184M custom model outperforms the 0.6B models
+5. **Common failure patterns**:
+   - Incorrectly attributing features to wrong projects
+   - Missing explicit links between strategies and principles
+   - Including irrelevant details in nuanced queries
+  
+
 <details>
 <summary>`BGE-reranker-v2-m3`</summary>  
 
