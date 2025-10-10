@@ -2433,9 +2433,9 @@ Based on the evaluation logs, here's a comprehensive analysis of each reranker's
 |-------|------|----------------|----------------|--------------|----------------|-----------|
 | **Custom Finetuned** | 184M | **12/12** | **None** | **0%** | None | Perfect accuracy, consistent performance |
 | Qwen3-Reranker | 0.6B | **12/12** | **None** | **0%** | None | Perfect accuracy, larger model |
-| gte-multilingual | 0.3B | 11/12 | Q4, Q11 | 16.7% | Abstract synthesis, nuanced distinctions | Fast, multilingual support |
-| Jina-multilingual | 0.3B | 11/12 | Q6, Q11 | 16.7% | Abstract synthesis, linking strategies | Good balance, multilingual |
-| BGE-reranker-v2-m3 | 0.6B | 9/12 | Q2, Q4, Q6, Q11 | 33.3% | Abstract synthesis, nuanced distinctions, linking strategies | Good on factual queries |
+| gte-multilingual | 0.3B | 10/12 | Q4, Q11 | 16.7% | Abstract synthesis, nuanced distinctions | Fast, multilingual support |
+| Jina-multilingual | 0.3B | 10/12 | Q6, Q11 | 16.7% | Abstract synthesis, linking strategies | Good balance, multilingual |
+| BGE-reranker-v2-m3 | 0.6B | 8/12 | Q2, Q4, Q6, Q11 | 33.3% | Abstract synthesis, nuanced distinctions, linking strategies | Good on factual queries |
 
 ### Query Difficulty Analysis
 
