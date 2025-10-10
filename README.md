@@ -2377,7 +2377,7 @@ Since the `APEX` version makes much more extensive use of the reranker component
 * `BGE-reranker-v2-m3`(0.6B)
 * `Qwen3-Reranker-0.6B`(0.6B)
 
-Only the `Qwen3-Reranker-0.6B` managed to also get perfect score on all queries, while others struggle with at least one query and was flagged by the LLM-as-judge for insufficient faithfullness or insufficient relevance. 
+Only the `Qwen3-Reranker-0.6B` managed to also get perfect score on all queries, while others struggle with at least 2 queries
 
 ### Reranker Performance Analysis
 
