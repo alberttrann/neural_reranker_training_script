@@ -61,7 +61,7 @@ class PipelineConfig:
     neural_ranker_path: str = 'BAAI/bge-reranker-v2-m3'
     # === MODIFIED SECTION END (1/3) ===
 
-    fpt_api_key: str = os.environ.get("FPT_API_KEY", "sk-0g0pXwF4HXrqu-CoydFkWA") # Use environment variable or fallback
+    fpt_api_key: str = os.environ.get("FPT_API_KEY", "") # 
 
     fpt_base_url: str = os.getenv("FPT_BASE_URL", "https://mkp-api.fptcloud.com")
     fpt_model_name: str = os.getenv("FPT_MODEL_NAME", "Qwen2.5-7B-Instruct")
