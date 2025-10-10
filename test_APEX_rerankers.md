@@ -56,10 +56,8 @@ class PipelineConfig:
     ner_model_name: str = 'dslim/bert-base-NER'
     nli_model_name: str = 'MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli'
     
-    # === MODIFIED SECTION START (1/3) ===
     # Updated the neural ranker path to the desired GTE model.
     neural_ranker_path: str = 'BAAI/bge-reranker-v2-m3'
-    # === MODIFIED SECTION END (1/3) ===
 
     fpt_api_key: str = os.environ.get("FPT_API_KEY", "") # 
 
@@ -313,14 +311,12 @@ class EnhancedPreprocessor:
         
         return all_sentences
 
-# === MODIFIED SECTION START (2/3) ===
 # This entire class has been replaced to support the GTE reranker model.
 class NeuralRanker:
     def __init__(self, model_path: str, config: PipelineConfig, device: str = DEVICE):
         self.device = device
         self.config = config
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
-        # GTE model requires trust_remote_code=True. Using float16 for performance on CUDA.
         self.model = AutoModelForSequenceClassification.from_pretrained(
             model_path,
             torch_dtype=torch.float16 if self.device == "cuda" else torch.float32
@@ -365,7 +361,6 @@ class NeuralRanker:
             
         # Return the sentences sorted by their new relevance score in descending order.
         return sorted(sentences, key=lambda s: s.relevance_score, reverse=True)
-# === MODIFIED SECTION END (2/3) ===
 
 # ==============================================================================
 # --- APEX RAG CONTROLLER ---
@@ -379,13 +374,11 @@ class KeystoneRAGController:
         self.data_manager = DataManager()
         self.preprocessor = EnhancedPreprocessor(config)
         
-        # === MODIFIED SECTION START (3/3) ===
         # The instantiation of NeuralRanker is simplified as it no longer needs the sbert_model.
         self.neural_ranker = NeuralRanker(
             model_path=config.neural_ranker_path, 
             config=config 
         )
-        # === MODIFIED SECTION END (3/3) ===
         
         self.fpt_client = OpenAI(api_key=config.fpt_api_key, base_url=config.fpt_base_url)
         self.evidence_validator = EvidenceValidator(config)
